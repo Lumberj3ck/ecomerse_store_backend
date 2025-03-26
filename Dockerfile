@@ -24,7 +24,8 @@ RUN yarn global add @medusajs/medusa-cli@latest
 COPY . .
 
 # run build
-RUN yarn build
+# RUN yarn build
 
 # run medusa start
-ENTRYPOINT ["/bin/sh", "./develop.sh", "start"]
+# ENTRYPOINT ["/bin/sh", "./develop.sh", "start"]
+ENTRYPOINT ["npm", "run", "start"]
