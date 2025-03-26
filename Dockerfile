@@ -1,26 +1,30 @@
-# Use Node.js LTS version as required by Medusa
-FROM node:20-alpine
+FROM node:20.8.0-alpine as deps
+WORKDIR /app/backend
 
-# Create app directory
-WORKDIR /app
+# copy required files
+COPY package.json .
+COPY yarn.lock .
 
-# Install system dependencies required for Medusa
-RUN apk add --no-cache python3 make g++
+# install deps 
+RUN yarn install --frozen-lockfile
 
-# Copy package files
-COPY package*.json ./
+# build stage
+FROM node:18-alpine3.16 as builder
+WORKDIR /app/backend
 
-# Install dependencies with legacy peer deps to resolve SWC conflicts
-RUN npm install --legacy-peer-deps
+# copy node_modules from deps
+COPY --from=deps /app/backend/node_modules /app/backend/node_modules
 
-# Copy source code
+# install python and medusa-cli
+RUN apk update
+RUN apk add python3
+RUN yarn global add @medusajs/medusa-cli@latest
+
+# copy project files to current workdir
 COPY . .
 
-# Build the Medusa application
-RUN npm run build
+# run build
+RUN yarn build
 
-# Expose the default Medusa port
-EXPOSE 9000
-
-# Start Medusa server
-CMD ["npm", "start"]
+# run medusa start
+ENTRYPOINT ["/bin/sh", "./develop.sh", "start"]
