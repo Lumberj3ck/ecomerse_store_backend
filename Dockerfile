@@ -9,7 +9,7 @@ COPY yarn.lock .
 RUN yarn install --frozen-lockfile
 
 # build stage
-FROM node:18-alpine3.16 as builder
+FROM node:20.8.0-alpine as builder
 WORKDIR /app/backend
 
 # copy node_modules from deps
