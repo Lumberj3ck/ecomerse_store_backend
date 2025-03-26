@@ -44,7 +44,7 @@ ENV PORT 9000
 ENV HOST 0.0.0.0
 
 # Copy config file
-COPY ./medusa-config.js ./
+COPY ./medusa-config.ts ./
 
 # Copy built application
 COPY --from=builder /usr/src/app/package.json ./package.json
