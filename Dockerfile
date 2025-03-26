@@ -27,5 +27,5 @@ COPY . .
 # RUN yarn build
 
 # run medusa start
-# ENTRYPOINT ["/bin/sh", "./develop.sh", "start"]
-ENTRYPOINT ["./develop.sh", "start"]
+RUN medusa migrations run
+ENTRYPOINT ["npm", "run", "start"]
