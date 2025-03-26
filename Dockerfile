@@ -28,4 +28,4 @@ COPY . .
 
 # run medusa start
 # ENTRYPOINT ["/bin/sh", "./develop.sh", "start"]
-ENTRYPOINT ["npm", "run", "start"]
+ENTRYPOINT ["./develop.sh", "start"]
